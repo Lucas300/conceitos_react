@@ -1,27 +1,39 @@
-import { useState } from "react";
-import Home from "../home/Home";
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 
 function Login() {
-  
-  const [isLogged, setIsLogged] = useState(false);
+  const { nome, trocarNome } = useContext(UserContext);
+  let navigate = useNavigate()
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    navigate('/home')
+  }
 
   return (
-      <>
-          {
-              isLogged ? (
-                  <Home
-                      titulo="Componente Home"
-                      texto="Bem-vindo de Volta!"
-                  />
-              ) : (
-                  <div>
-                      <h2>Componente Login</h2>
-                      <button onClick={() => setIsLogged(true)}>Entrar</button>
-                  </div>
-              )
-          }
-      </>
-  )
+    <div className='container'>
+      <form onSubmit={handleSubmit} className="formulario">
+        <h1>Autenticar Usuário</h1>
+        <div className="campo">
+          <label htmlFor="usuario">Nome</label>
+          <input
+            type="text"
+            id="usuario"
+            name="usuario"
+            placeholder="Nome do Usuário"
+            value={nome}
+            onChange={(event) => trocarNome(event.target.value)}
+          />
+        </div>
+        <button type='submit'>
+          Entrar
+        </button>
+
+      </form>
+
+    </div>
+  );
 }
 
-export default Login
+export default Login;
